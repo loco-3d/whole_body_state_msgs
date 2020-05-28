@@ -1,5 +1,6 @@
 import rospy
-import roslib; roslib.load_manifest('state_msgs')
+import roslib
+roslib.load_manifest('state_msgs')
 from state_msgs.msg import WholeBodyState, ContactState, JointState
 import pinocchio
 
@@ -8,65 +9,67 @@ class WholeBodyStateInterface():
     def __init__(self, model):
         self.model = model
         self.data = model.createData()
+        self.msg = WholeBodyState()
+        self.msg.header.frame_id = self.model.frames[2].name
+        njoints = self.model.njoints - 2
+        for j in range(njoints):
+            name = self.model.names[j + 2]
+            joint_msg = JointState()
+            joint_msg.name = name
+            self.msg.joints.append(joint_msg)
 
     def writeToMessage(self, t, q, v, tau, f=None):
-        msg = WholeBodyState()
-
         # Filling the time information
-        msg.header.stamp = rospy.Time(t)
-        msg.header.frame_id = self.model.frames[2].name
-        msg.time = t
+        self.msg.header.stamp = rospy.Time(t)
+        self.msg.time = t
 
         # Filling the centroidal state
         pinocchio.centerOfMass(self.model, self.data, q, v)
         c = self.data.com[0]
         cd = self.data.vcom[0]
         # Center of mass
-        msg.centroidal.com_position.x = c[0]
-        msg.centroidal.com_position.y = c[1]
-        msg.centroidal.com_position.z = c[2]
-        msg.centroidal.com_velocity.x = cd[0]
-        msg.centroidal.com_velocity.y = cd[1]
-        msg.centroidal.com_velocity.z = cd[2]
+        self.msg.centroidal.com_position.x = c[0]
+        self.msg.centroidal.com_position.y = c[1]
+        self.msg.centroidal.com_position.z = c[2]
+        self.msg.centroidal.com_velocity.x = cd[0]
+        self.msg.centroidal.com_velocity.y = cd[1]
+        self.msg.centroidal.com_velocity.z = cd[2]
         # Base
-        msg.centroidal.base_orientation.x = q[3]
-        msg.centroidal.base_orientation.y = q[4]
-        msg.centroidal.base_orientation.z = q[5]
-        msg.centroidal.base_orientation.w = q[6]
-        msg.centroidal.base_angular_velocity.x = v[3]
-        msg.centroidal.base_angular_velocity.y = v[4]
-        msg.centroidal.base_angular_velocity.z = v[5]
+        self.msg.centroidal.base_orientation.x = q[3]
+        self.msg.centroidal.base_orientation.y = q[4]
+        self.msg.centroidal.base_orientation.z = q[5]
+        self.msg.centroidal.base_orientation.w = q[6]
+        self.msg.centroidal.base_angular_velocity.x = v[3]
+        self.msg.centroidal.base_angular_velocity.y = v[4]
+        self.msg.centroidal.base_angular_velocity.z = v[5]
         # Momenta
         momenta = pinocchio.computeCentroidalMomentum(self.model, self.data)
         momenta_rate = pinocchio.computeCentroidalMomentumTimeVariation(self.model, self.data)
-        msg.centroidal.momenta.linear.x = momenta.linear[0]
-        msg.centroidal.momenta.linear.y = momenta.linear[1]
-        msg.centroidal.momenta.linear.z = momenta.linear[2]
-        msg.centroidal.momenta.angular.x = momenta.angular[0]
-        msg.centroidal.momenta.angular.y = momenta.angular[1]
-        msg.centroidal.momenta.angular.z = momenta.angular[2]
-        msg.centroidal.momenta_rate.linear.x = momenta_rate.linear[0]
-        msg.centroidal.momenta_rate.linear.y = momenta_rate.linear[1]
-        msg.centroidal.momenta_rate.linear.z = momenta_rate.linear[2]
-        msg.centroidal.momenta_rate.angular.x = momenta_rate.angular[0]
-        msg.centroidal.momenta_rate.angular.y = momenta_rate.angular[1]
-        msg.centroidal.momenta_rate.angular.z = momenta_rate.angular[2]
+        self.msg.centroidal.momenta.linear.x = momenta.linear[0]
+        self.msg.centroidal.momenta.linear.y = momenta.linear[1]
+        self.msg.centroidal.momenta.linear.z = momenta.linear[2]
+        self.msg.centroidal.momenta.angular.x = momenta.angular[0]
+        self.msg.centroidal.momenta.angular.y = momenta.angular[1]
+        self.msg.centroidal.momenta.angular.z = momenta.angular[2]
+        self.msg.centroidal.momenta_rate.linear.x = momenta_rate.linear[0]
+        self.msg.centroidal.momenta_rate.linear.y = momenta_rate.linear[1]
+        self.msg.centroidal.momenta_rate.linear.z = momenta_rate.linear[2]
+        self.msg.centroidal.momenta_rate.angular.x = momenta_rate.angular[0]
+        self.msg.centroidal.momenta_rate.angular.y = momenta_rate.angular[1]
+        self.msg.centroidal.momenta_rate.angular.z = momenta_rate.angular[2]
 
         # Filling the joint state
         njoints = self.model.njoints - 2
         for j in range(njoints):
-            name = self.model.names[j + 2]
-            joint_msg = JointState()
-            joint_msg.name = name
-            joint_msg.position = q[7 + j]
-            joint_msg.velocity = v[6 + j]
-            joint_msg.effort = tau[j]
-            msg.joints.append(joint_msg)
+            self.msg.joints[j].position = q[7 + j]
+            self.msg.joints[j].velocity = v[6 + j]
+            self.msg.joints[j].effort = tau[j]
 
         # Filling the contact state
         pinocchio.forwardKinematics(self.model, self.data, q, v)
         if f is not None:
-            for name in f:
+            self.msg.contacts = [None] * len(f.keys())
+            for i, name in enumerate(f):
                 contact_msg = ContactState()
                 contact_msg.name = name
 
@@ -98,5 +101,5 @@ class WholeBodyStateInterface():
                 contact_msg.wrench.torque.y = f[name].angular[1]
                 contact_msg.wrench.torque.z = f[name].angular[2]
 
-                msg.contacts.append(contact_msg)
-        return msg
+                self.msg.contacts[i] = contact_msg
+        return self.msg
