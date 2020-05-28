@@ -82,7 +82,7 @@ class WholeBodyStatePublisher():
                 frame_id = self.model.getFrameId(name)
                 joint_id = self.model.frames[frame_id].parent
                 oMf = pinocchio.updateFramePlacement(self.model, self.data, frame_id)
-                pose = pinocchio.se3ToXYZQUAT(oMf)
+                pose = pinocchio.SE3ToXYZQUAT(oMf)
                 ovf = pinocchio.getFrameVelocity(self.model, self.data, frame_id,
                                                  pinocchio.ReferenceFrame.LOCAL_WORLD_ALIGNED)
 
@@ -100,15 +100,12 @@ class WholeBodyStatePublisher():
                 contact_msg.velocity.angular.y = ovf.angular[1]
                 contact_msg.velocity.angular.z = ovf.angular[2]
 
-                fiMo = pinocchio.SE3(data.oMi[joint_id].rotation.transpose(),
-                                     self.model.frames[frame_id].placement.translation)
-                off = fiMo.actInv(data.f[joint_id])
-                contact_msg.wrench.force.x = off.linear[0]
-                contact_msg.wrench.force.y = off.linear[1]
-                contact_msg.wrench.force.z = off.linear[2]
-                contact_msg.wrench.torque.x = off.angular[0]
-                contact_msg.wrench.torque.y = off.angular[1]
-                contact_msg.wrench.torque.z = off.angular[2]
+                contact_msg.wrench.force.x = f[name].linear[0]
+                contact_msg.wrench.force.y = f[name].linear[1]
+                contact_msg.wrench.force.z = f[name].linear[2]
+                contact_msg.wrench.torque.x = f[name].angular[0]
+                contact_msg.wrench.torque.y = f[name].angular[1]
+                contact_msg.wrench.torque.z = f[name].angular[2]
 
                 msg.contacts.append(contact_msg)
         return msg
