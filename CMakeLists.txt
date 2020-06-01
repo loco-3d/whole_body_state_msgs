@@ -7,7 +7,6 @@ SET(PROJECT_DESCRIPTION "State ROS messages")
 
 # Print initial message
 MESSAGE(STATUS "${PROJECT_DESCRIPTION}, version ${PROJECT_VERSION}")
-MESSAGE("State ROS messages")
 MESSAGE("Copyright (C) 2020-2022 University of Edinburgh")
 MESSAGE("All rights reserved.")
 MESSAGE("Released under the BSD 3-Clause License.")
@@ -49,14 +48,9 @@ generate_messages(
 
 
 # Define catkin dependencies
-catkin_package(
-    LIBRARIES  ${PROJECT_NAME}
-    CATKIN_DEPENDS  roscpp message_runtime std_msgs geometry_msgs)
+catkin_package(CATKIN_DEPENDS  roscpp message_runtime std_msgs geometry_msgs)
 
 
-include_directories(${catkin_INCLUDE_DIRS})
-link_directories(${catkin_LIBRARY_DIRS})
-
-# Installation rule
+# Installation src
 INSTALL(DIRECTORY src
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})

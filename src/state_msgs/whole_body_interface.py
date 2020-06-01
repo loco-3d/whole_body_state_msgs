@@ -10,7 +10,7 @@ class WholeBodyStateInterface():
         self.model = model
         self.data = model.createData()
         self.msg = WholeBodyState()
-        self.msg.header.frame_id = self.model.frames[2].name
+        self.msg.header.frame_id = "world"
         njoints = self.model.njoints - 2
         for j in range(njoints):
             name = self.model.names[j + 2]
@@ -94,12 +94,23 @@ class WholeBodyStateInterface():
                 contact_msg.velocity.angular.y = ovf.angular[1]
                 contact_msg.velocity.angular.z = ovf.angular[2]
 
-                contact_msg.wrench.force.x = f[name].linear[0]
-                contact_msg.wrench.force.y = f[name].linear[1]
-                contact_msg.wrench.force.z = f[name].linear[2]
-                contact_msg.wrench.torque.x = f[name].angular[0]
-                contact_msg.wrench.torque.y = f[name].angular[1]
-                contact_msg.wrench.torque.z = f[name].angular[2]
+                contact_info = f[name]
+                if contact_info[0] is not None:
+                    contact_msg.type = contact_info[0]
+                if contact_info[1] is not None:
+                    contact_msg.wrench.force.x = contact_info[1].linear[0]
+                    contact_msg.wrench.force.y = contact_info[1].linear[1]
+                    contact_msg.wrench.force.z = contact_info[1].linear[2]
+                    contact_msg.wrench.torque.x = contact_info[1].angular[0]
+                    contact_msg.wrench.torque.y = contact_info[1].angular[1]
+                    contact_msg.wrench.torque.z = contact_info[1].angular[2]
+
+                if contact_info[2] is not None:
+                    contact_msg.surface_normal.x = contact_info[2][0]
+                    contact_msg.surface_normal.y = contact_info[2][1]
+                    contact_msg.surface_normal.z = contact_info[2][2]
+                if contact_info[3] is not None:
+                    contact_msg.friction_coefficient = contact_info[3]
 
                 self.msg.contacts[i] = contact_msg
         return self.msg
