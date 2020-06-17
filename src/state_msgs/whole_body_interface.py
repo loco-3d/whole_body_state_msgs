@@ -18,7 +18,7 @@ class WholeBodyStateInterface():
             joint_msg.name = name
             self.msg.joints.append(joint_msg)
 
-    def writeToMessage(self, t, q, v, tau, f=None):
+    def writeToMessage(self, t, q, v, tau, f=None, s=None):
         # Filling the time information
         self.msg.header.stamp = rospy.Time(t)
         self.msg.time = t
@@ -95,22 +95,28 @@ class WholeBodyStateInterface():
                 contact_msg.velocity.angular.z = ovf.angular[2]
 
                 contact_info = f[name]
-                if contact_info[0] is not None:
-                    contact_msg.type = contact_info[0]
-                if contact_info[1] is not None:
-                    contact_msg.wrench.force.x = contact_info[1].linear[0]
-                    contact_msg.wrench.force.y = contact_info[1].linear[1]
-                    contact_msg.wrench.force.z = contact_info[1].linear[2]
-                    contact_msg.wrench.torque.x = contact_info[1].angular[0]
-                    contact_msg.wrench.torque.y = contact_info[1].angular[1]
-                    contact_msg.wrench.torque.z = contact_info[1].angular[2]
+                ctype = contact_info[0]
+                force = contact_info[1]
+                if ctype is not None:
+                    contact_msg.type = ctype
+                if force is not None:
+                    contact_msg.wrench.force.x = force.linear[0]
+                    contact_msg.wrench.force.y = force.linear[1]
+                    contact_msg.wrench.force.z = force.linear[2]
+                    contact_msg.wrench.torque.x = force.angular[0]
+                    contact_msg.wrench.torque.y = force.angular[1]
+                    contact_msg.wrench.torque.z = force.angular[2]
 
-                if contact_info[2] is not None:
-                    contact_msg.surface_normal.x = contact_info[2][0]
-                    contact_msg.surface_normal.y = contact_info[2][1]
-                    contact_msg.surface_normal.z = contact_info[2][2]
-                if contact_info[3] is not None:
-                    contact_msg.friction_coefficient = contact_info[3]
+                if s is not None:
+                    terrain_info = s[name]
+                    norm = terrain_info[0]
+                    friction = terrain_info[1]
+                    if norm is not None:
+                        contact_msg.surface_normal.x = norm[0]
+                        contact_msg.surface_normal.y = norm[1]
+                        contact_msg.surface_normal.z = norm[2]
+                    if friction is not None:
+                        contact_msg.friction_coefficient = friction
 
                 self.msg.contacts[i] = contact_msg
         return self.msg
