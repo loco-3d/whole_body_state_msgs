@@ -18,10 +18,15 @@ class WholeBodyStateInterface():
             joint_msg.name = name
             self.msg.joints.append(joint_msg)
 
-    def writeToMessage(self, t, q, v, tau=None, f=None, s=None):
+    def writeToMessage(self, t, q, v=None, tau=None, f=None, s=None):
         # Filling the time information
         self.msg.header.stamp = rospy.Time(t)
         self.msg.time = t
+
+        if v is None:
+            v = np.zeros(self.model.nv)
+        if tau is None:
+            tau = np.zeros(self.model.njoints - 2)
 
         # Filling the centroidal state
         pinocchio.centerOfMass(self.model, self.data, q, v)
@@ -63,8 +68,7 @@ class WholeBodyStateInterface():
         for j in range(njoints):
             self.msg.joints[j].position = q[7 + j]
             self.msg.joints[j].velocity = v[6 + j]
-            if tau is not None:
-                self.msg.joints[j].effort = tau[j]
+            self.msg.joints[j].effort = tau[j]
 
         # Filling the contact state
         pinocchio.forwardKinematics(self.model, self.data, q, v)
