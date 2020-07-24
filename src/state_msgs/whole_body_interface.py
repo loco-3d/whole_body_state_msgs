@@ -18,7 +18,7 @@ class WholeBodyStateInterface():
             joint_msg.name = name
             self.msg.joints.append(joint_msg)
 
-    def writeToMessage(self, t, q, v, tau, f=None, s=None):
+    def writeToMessage(self, t, q, v, tau=None, f=None, s=None):
         # Filling the time information
         self.msg.header.stamp = rospy.Time(t)
         self.msg.time = t
@@ -63,7 +63,8 @@ class WholeBodyStateInterface():
         for j in range(njoints):
             self.msg.joints[j].position = q[7 + j]
             self.msg.joints[j].velocity = v[6 + j]
-            self.msg.joints[j].effort = tau[j]
+            if tau is not None:
+                self.msg.joints[j].effort = tau[j]
 
         # Filling the contact state
         pinocchio.forwardKinematics(self.model, self.data, q, v)
