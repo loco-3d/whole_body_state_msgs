@@ -19,7 +19,7 @@ class WholeBodyStateInterface():
             joint_msg.name = name
             self.msg.joints.append(joint_msg)
 
-    def writeToMessage(self, t, q, v=None, tau=None, f=None, s=None):
+    def writeToMessage(self, t, q, v=None, tau=None, p=dict(), pd=dict(), f=dict(), s=dict()):
         # Filling the time information
         self.msg.header.stamp = rospy.Time(t)
         self.msg.time = t
@@ -72,57 +72,60 @@ class WholeBodyStateInterface():
             self.msg.joints[j].effort = tau[j]
 
         # Filling the contact state
-        pinocchio.forwardKinematics(self.model, self.data, q, v)
-        if f is not None:
-            self.msg.contacts = [None] * len(f.keys())
-            for i, name in enumerate(f):
-                contact_msg = ContactState()
-                contact_msg.name = name
-
-                frame_id = self.model.getFrameId(name)
-                joint_id = self.model.frames[frame_id].parent
+        names = p.keys() + pd.keys() + f.keys() + s.keys()
+        names = list(dict.fromkeys(names))
+        self.msg.contacts = [None] * len(names)
+        if len(names) != 0 and (len(p.keys()) == 0 or len(pd.keys()) == 0):
+            pinocchio.forwardKinematics(self.model, self.data, q, v)
+        for i, name in enumerate(names):
+            contact_msg = ContactState()
+            contact_msg.name = name
+            frame_id = self.model.getFrameId(name)
+            # Retrive the contact position
+            if p.has_key(name):
+                pose = pinocchio.SE3ToXYZQUAT(p[name])
+            else:
                 oMf = pinocchio.updateFramePlacement(self.model, self.data, frame_id)
                 pose = pinocchio.SE3ToXYZQUAT(oMf)
+            # Retrieve the contact velocity
+            if pd.has_key(name):
+                ovf = pd[name]
+            else:
                 ovf = pinocchio.getFrameVelocity(self.model, self.data, frame_id,
                                                  pinocchio.ReferenceFrame.LOCAL_WORLD_ALIGNED)
-
-                contact_msg.pose.position.x = pose[0]
-                contact_msg.pose.position.y = pose[1]
-                contact_msg.pose.position.z = pose[2]
-                contact_msg.pose.orientation.x = pose[3]
-                contact_msg.pose.orientation.y = pose[4]
-                contact_msg.pose.orientation.z = pose[5]
-                contact_msg.pose.orientation.w = pose[6]
-                contact_msg.velocity.linear.x = ovf.linear[0]
-                contact_msg.velocity.linear.y = ovf.linear[1]
-                contact_msg.velocity.linear.z = ovf.linear[2]
-                contact_msg.velocity.angular.x = ovf.angular[0]
-                contact_msg.velocity.angular.y = ovf.angular[1]
-                contact_msg.velocity.angular.z = ovf.angular[2]
-
+            # Storing the contact position and velocity inside the message
+            contact_msg.pose.position.x = pose[0]
+            contact_msg.pose.position.y = pose[1]
+            contact_msg.pose.position.z = pose[2]
+            contact_msg.pose.orientation.x = pose[3]
+            contact_msg.pose.orientation.y = pose[4]
+            contact_msg.pose.orientation.z = pose[5]
+            contact_msg.pose.orientation.w = pose[6]
+            contact_msg.velocity.linear.x = ovf.linear[0]
+            contact_msg.velocity.linear.y = ovf.linear[1]
+            contact_msg.velocity.linear.z = ovf.linear[2]
+            contact_msg.velocity.angular.x = ovf.angular[0]
+            contact_msg.velocity.angular.y = ovf.angular[1]
+            contact_msg.velocity.angular.z = ovf.angular[2]
+            # Retrieving and storing force data
+            if f.has_key(name):
                 contact_info = f[name]
                 ctype = contact_info[0]
                 force = contact_info[1]
-                if ctype is not None:
-                    contact_msg.type = ctype
-                if force is not None:
-                    contact_msg.wrench.force.x = force.linear[0]
-                    contact_msg.wrench.force.y = force.linear[1]
-                    contact_msg.wrench.force.z = force.linear[2]
-                    contact_msg.wrench.torque.x = force.angular[0]
-                    contact_msg.wrench.torque.y = force.angular[1]
-                    contact_msg.wrench.torque.z = force.angular[2]
-
-                if s is not None:
-                    terrain_info = s[name]
-                    norm = terrain_info[0]
-                    friction = terrain_info[1]
-                    if norm is not None:
-                        contact_msg.surface_normal.x = norm[0]
-                        contact_msg.surface_normal.y = norm[1]
-                        contact_msg.surface_normal.z = norm[2]
-                    if friction is not None:
-                        contact_msg.friction_coefficient = friction
-
-                self.msg.contacts[i] = contact_msg
+                contact_msg.type = ctype
+                contact_msg.wrench.force.x = force.linear[0]
+                contact_msg.wrench.force.y = force.linear[1]
+                contact_msg.wrench.force.z = force.linear[2]
+                contact_msg.wrench.torque.x = force.angular[0]
+                contact_msg.wrench.torque.y = force.angular[1]
+                contact_msg.wrench.torque.z = force.angular[2]
+            if s.has_key(name):
+                terrain_info = s[name]
+                norm = terrain_info[0]
+                friction = terrain_info[1]
+                contact_msg.surface_normal.x = norm[0]
+                contact_msg.surface_normal.y = norm[1]
+                contact_msg.surface_normal.z = norm[2]
+                contact_msg.friction_coefficient = friction
+            self.msg.contacts[i] = contact_msg
         return self.msg

@@ -11,6 +11,6 @@ class WholeBodyStatePublisher():
         self.pub = rospy.Publisher(topic, WholeBodyState, queue_size=1)
         self.wb_iface = wb_iface.WholeBodyStateInterface(model)
 
-    def publish(self, t, q, v, tau, f=None, s=None):
-        msg = self.wb_iface.writeToMessage(t, q, v, tau, f, s)
+    def publish(self, t, q, v, tau, p=dict(), pd=dict(), f=dict(), s=dict()):
+        msg = self.wb_iface.writeToMessage(t, q, v, tau, p, pd, f, s)
         self.pub.publish(msg)
