@@ -129,3 +129,57 @@ class WholeBodyStateInterface():
                 contact_msg.friction_coefficient = friction
             self.msg.contacts[i] = contact_msg
         return self.msg
+
+    def writeFromMessage(self, msg):
+        t = msg.time
+        q = np.zeros(self.model.nq)
+        v = np.zeros(self.model.nv)
+        tau = np.zeros(self.model.njoints - 2)
+        p = dict()
+        pd = dict()
+        f = dict()
+        s = dict()
+        # Retrieve the generalized position and velocity, and joint torques
+        q[3] = msg.centroidal.base_orientation.x
+        q[4] = msg.centroidal.base_orientation.y
+        q[5] = msg.centroidal.base_orientation.z
+        q[6] = msg.centroidal.base_orientation.w
+        v[3] = msg.centroidal.base_angular_velocity.x
+        v[4] = msg.centroidal.base_angular_velocity.y
+        v[5] = msg.centroidal.base_angular_velocity.z
+        for j in range(len(msg.joints)):
+            jointId = self.model.getJointId(msg.joints[j].name) - 2
+            q[jointId + 7] = msg.joints[j].position
+            v[jointId + 6] = msg.joints[j].velocity
+            tau[jointId] = msg.joints[j].effort
+        pinocchio.centerOfMass(self.model, self.data, q, v)
+        q[0] = msg.centroidal.com_position.x - self.data.com[0][0]
+        q[1] = msg.centroidal.com_position.y - self.data.com[0][1]
+        q[2] = msg.centroidal.com_position.z - self.data.com[0][2]
+        v[0] = msg.centroidal.com_velocity.x - self.data.vcom[0][0]
+        v[1] = msg.centroidal.com_velocity.y - self.data.vcom[0][1]
+        v[2] = msg.centroidal.com_velocity.z - self.data.vcom[0][2]
+        # Retrive the contact information
+        for contact in msg.contacts:
+            name = contact.name
+            # Contact pose
+            pose = contact.pose
+            position = np.array([pose.position.x, pose.position.y, pose.position.z])
+            quaternion = pinocchio.Quaternion(pose.orientation.w, pose.orientation.x, pose.orientation.y,
+                                              pose.orientation.z)
+            p[name] = pinocchio.SE3(quaternion, position)
+            # Contact velocity
+            velocity = contact.velocity
+            lin_vel = np.array([velocity.linear.x, velocity.linear.y, velocity.linear.z])
+            ang_vel = np.array([velocity.angular.x, velocity.angular.y, velocity.angular.z])
+            pd[name] = pinocchio.Motion(lin_vel, ang_vel)
+            # Contact wrench
+            wrench = contact.wrench
+            force = np.array([wrench.force.x, wrench.force.y, wrench.force.z])
+            torque = np.array([wrench.torque.x, wrench.torque.y, wrench.torque.z])
+            f[name] = [contact.type, pinocchio.Force(force, torque)]
+            # Surface normal and friction coefficient
+            normal = contact.surface_normal
+            nsurf = np.array([normal.x, normal.y, normal.z])
+            s[name] = [nsurf, contact.friction_coefficient]
+        return t, q, v, tau, p, pd, f, s
