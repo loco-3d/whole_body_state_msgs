@@ -15,24 +15,31 @@ class WholeBodyTrajectoryPublisher():
         # Check that the length of the lists are consistent
         if len(ts) is not len(qs):
             print("Couldn't publish the message since the length of the qs list is not consistent")
+            return
         if vs is not None:
             if len(ts) is not len(vs):
                 print("Couldn't publish the message since the length of the vs list is not consistent")
+                return
         if us is not None:
             if len(ts) is not len(us):
                 print("Couldn't publish the message since the length of the us list is not consistent")
+                return
         if ps is not None:
             if len(ts) is not len(ps):
                 print("Couldn't publish the message since the length of the ps list is not consistent")
+                return
         if pds is not None:
             if len(ts) is not len(pds):
                 print("Couldn't publish the message since the length of the pds list is not consistent")
+                return
         if fs is not None:
             if len(ts) is not len(fs):
                 print("Couldn't publish the message since the length of the fs list is not consistent")
+                return
         if ss is not None:
             if len(ts) is not len(ss):
                 print("Couldn't publish the message since the length of the ss list is not consistent")
+                return
 
         msg.header.stamp = rospy.Time.now()
         msg.header.frame_id = "world"
