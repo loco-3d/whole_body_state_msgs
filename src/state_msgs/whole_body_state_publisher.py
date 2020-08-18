@@ -1,6 +1,4 @@
 import rospy
-import roslib
-roslib.load_manifest('state_msgs')
 from state_msgs.msg import WholeBodyState
 from state_msgs import whole_body_interface as wb_iface
 

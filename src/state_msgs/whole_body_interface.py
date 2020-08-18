@@ -1,6 +1,4 @@
 import rospy
-import roslib
-roslib.load_manifest('state_msgs')
 from state_msgs.msg import WholeBodyState, ContactState, JointState
 import pinocchio
 import numpy as np
