@@ -15,7 +15,6 @@ MESSAGE(STATUS "Released under the BSD 3-Clause License.")
 FIND_PACKAGE(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
-  sensor_msgs
   geometry_msgs
   message_generation
 )
@@ -42,4 +41,4 @@ generate_messages(
 )
 
 # Define catkin dependencies
-catkin_package(CATKIN_DEPENDS message_runtime sensor_msgs std_msgs geometry_msgs)
+catkin_package(CATKIN_DEPENDS message_runtime std_msgs geometry_msgs)
