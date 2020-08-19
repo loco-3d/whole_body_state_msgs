@@ -1,8 +1,11 @@
+from __future__ import print_function, absolute_import
+
 import rospy
 from state_msgs.msg import WholeBodyState, ContactState, JointState
 import pinocchio
 import numpy as np
 
+__all__ = ['WholeBodyStateInterface']
 
 class WholeBodyStateInterface():
     def __init__(self, model):
