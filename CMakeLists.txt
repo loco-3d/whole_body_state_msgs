@@ -7,7 +7,7 @@ SET(PROJECT_DESCRIPTION "Whole-body State ROS messages")
 
 # Print initial message - using STATUS so it doesn't trigger as a warning
 MESSAGE(STATUS "${PROJECT_DESCRIPTION}, version ${PROJECT_VERSION}")
-MESSAGE(STATUS "Copyright (C) 2020 University of Edinburgh")
+MESSAGE(STATUS "Copyright (C) 2020 University of Edinburgh, University of Oxford")
 MESSAGE(STATUS "All rights reserved.")
 MESSAGE(STATUS "Released under the BSD 3-Clause License.")
 

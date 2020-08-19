@@ -6,8 +6,9 @@
     Message and service data structures for robot states
   </description>
 
-  <author email="carlos.mastalli@ed.ac.uk">Carlos Mastalli</author>
   <maintainer email="carlos.mastalli@ad.ec.uk">Carlos Mastalli</maintainer>
+  <author email="carlos.mastalli@ed.ac.uk">Carlos Mastalli</author>
+  <author email="wolfgang@robots.ox.ac.uk">Wolfgang Merkt</author>
   <license>BSD 3-Clause</license>
 
   <buildtool_depend>catkin</buildtool_depend>
