@@ -10,13 +10,13 @@
 Header header
 
 # Desired whole-body state
-state_msgs/WholeBodyState desired
+whole_body_state_msgs/WholeBodyState desired
 
 # Actual whole-body state
-state_msgs/WholeBodyState actual
+whole_body_state_msgs/WholeBodyState actual
 
 # Error whole-body state
-state_msgs/WholeBodyState error
+whole_body_state_msgs/WholeBodyState error
 
 # Command state
-state_msgs/JointCommand[] command
+whole_body_state_msgs/JointCommand[] command

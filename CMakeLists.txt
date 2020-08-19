@@ -1,9 +1,9 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
-PROJECT(state_msgs)
+PROJECT(whole_body_state_msgs)
 
 # Set up project properties
-SET(PROJECT_NAME state_msgs)
-SET(PROJECT_DESCRIPTION "State ROS messages")
+SET(PROJECT_NAME whole_body_state_msgs)
+SET(PROJECT_DESCRIPTION "Whole-body State ROS messages")
 
 # Print initial message - using STATUS so it doesn't trigger as a warning
 MESSAGE(STATUS "${PROJECT_DESCRIPTION}, version ${PROJECT_VERSION}")
@@ -15,6 +15,7 @@ MESSAGE(STATUS "Released under the BSD 3-Clause License.")
 FIND_PACKAGE(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
+  sensor_msgs
   geometry_msgs
   message_generation
 )
@@ -41,4 +42,4 @@ generate_messages(
 )
 
 # Define catkin dependencies
-catkin_package(CATKIN_DEPENDS message_runtime std_msgs geometry_msgs)
+catkin_package(CATKIN_DEPENDS message_runtime sensor_msgs std_msgs geometry_msgs)

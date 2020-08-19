@@ -1,7 +1,7 @@
 from __future__ import print_function, absolute_import
 
 import rospy
-from state_msgs.msg import WholeBodyState
+from whole_body_state_msgs.msg import WholeBodyState
 from .whole_body_interface import WholeBodyStateInterface
 
 __all__ = ['WholeBodyStatePublisher']

@@ -1,7 +1,7 @@
 from __future__ import print_function, absolute_import
 
 import rospy
-from state_msgs.msg import WholeBodyTrajectory
+from whole_body_state_msgs.msg import WholeBodyTrajectory
 from .whole_body_interface import WholeBodyStateInterface
 import copy
 
