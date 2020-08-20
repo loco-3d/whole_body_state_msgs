@@ -11,7 +11,7 @@
 Header header
 
 # The actual whole-body state
-state_msgs/WholeBodyState actual
+whole_body_state_msgs/WholeBodyState actual
 
 # The whole-body trajectory
-state_msgs/WholeBodyState[] trajectory
+whole_body_state_msgs/WholeBodyState[] trajectory

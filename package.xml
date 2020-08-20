@@ -1,29 +1,28 @@
 <?xml version="1.0"?>
-<package format="2">
-  <name>state_msgs</name>
+<package format="3">
+  <name>whole_body_state_msgs</name>
   <version>0.0.1</version>
   <description>
     Message and service data structures for robot states
   </description>
 
-  <author email="carlos.mastalli@ed.ac.uk">Carlos Mastalli</author>
   <maintainer email="carlos.mastalli@ad.ec.uk">Carlos Mastalli</maintainer>
+  <author email="carlos.mastalli@ed.ac.uk">Carlos Mastalli</author>
+  <author email="wolfgang@robots.ox.ac.uk">Wolfgang Merkt</author>
   <license>BSD 3-Clause</license>
 
   <buildtool_depend>catkin</buildtool_depend>
-  
-  <build_depend>roscpp</build_depend>
+
   <build_depend>rospy</build_depend>
   <build_depend>message_generation</build_depend>
   <build_depend>std_msgs</build_depend>
   <build_depend>geometry_msgs</build_depend>
-  
-  <exec_depend>roscpp</exec_depend>
+
   <exec_depend>rospy</exec_depend>
   <exec_depend>message_runtime</exec_depend>
   <exec_depend>std_msgs</exec_depend>
   <exec_depend>geometry_msgs</exec_depend>
-  <exec_depend>python-numpy</exec_depend>
-  <exec_depend>python-pinocchio</exec_depend>
-
+  <exec_depend condition="$ROS_PYTHON_VERSION == 2">python-numpy</exec_depend>
+  <exec_depend condition="$ROS_PYTHON_VERSION == 3">python3-numpy</exec_depend>
+  <exec_depend>pinocchio</exec_depend>
 </package>

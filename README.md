@@ -21,7 +21,7 @@ With these basic states, the package describes whole-body states and trajectorie
 
 ## :penguin: Building
 
-The state_msgs is a catkin project which can be built as:
+The whole_body_state_msgs is a catkin project which can be built as:
 
 	cd your_ros_ws/
 	catkin build #catkin_make

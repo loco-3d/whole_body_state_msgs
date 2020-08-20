@@ -28,10 +28,10 @@ Header header
 float64 time
 
 # This represents the base state (CoM motion, angular motion and centroidal momenta)
-state_msgs/CentroidalState centroidal
+whole_body_state_msgs/CentroidalState centroidal
 
 # This represents the joint state (position, velocity, acceleration and effort)
-state_msgs/JointState[] joints
+whole_body_state_msgs/JointState[] joints
 
 # This represents the end-effector state (cartesian position and contact forces)
-state_msgs/ContactState[] contacts
+whole_body_state_msgs/ContactState[] contacts
