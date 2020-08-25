@@ -4,6 +4,7 @@ import rospy
 from whole_body_state_msgs.msg import WholeBodyState, ContactState, JointState
 import pinocchio
 import numpy as np
+import copy
 
 __all__ = ['WholeBodyStateInterface']
 
@@ -129,7 +130,7 @@ class WholeBodyStateInterface():
                 contact_msg.surface_normal.z = norm[2]
                 contact_msg.friction_coefficient = friction
             self.msg.contacts[i] = contact_msg
-        return self.msg
+        return copy.deepcopy(self.msg)
 
     def writeFromMessage(self, msg):
         t = msg.time
@@ -183,4 +184,4 @@ class WholeBodyStateInterface():
             normal = contact.surface_normal
             nsurf = np.array([normal.x, normal.y, normal.z])
             s[name] = [nsurf, contact.friction_coefficient]
-        return t, q, v, tau, p, pd, f, s
+        return copy.deepcopy(t), copy.deepcopy(q), copy.deepcopy(v), copy.deepcopy(tau), copy.deepcopy(p), copy.deepcopy(pd), copy.deepcopy(f), copy.deepcopy(s)
