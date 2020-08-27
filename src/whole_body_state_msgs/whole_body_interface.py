@@ -8,6 +8,7 @@ import copy
 
 __all__ = ['WholeBodyStateInterface']
 
+
 class WholeBodyStateInterface():
     def __init__(self, model):
         self.model = model
@@ -184,4 +185,5 @@ class WholeBodyStateInterface():
             normal = contact.surface_normal
             nsurf = np.array([normal.x, normal.y, normal.z])
             s[name] = [nsurf, contact.friction_coefficient]
-        return copy.deepcopy(t), copy.deepcopy(q), copy.deepcopy(v), copy.deepcopy(tau), copy.deepcopy(p), copy.deepcopy(pd), copy.deepcopy(f), copy.deepcopy(s)
+        return copy.deepcopy(t), copy.deepcopy(q), copy.deepcopy(v), copy.deepcopy(tau), copy.deepcopy(
+            p), copy.deepcopy(pd), copy.deepcopy(f), copy.deepcopy(s)

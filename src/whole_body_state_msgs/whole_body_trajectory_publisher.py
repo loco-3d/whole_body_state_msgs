@@ -7,6 +7,7 @@ import copy
 
 __all__ = ['WholeBodyTrajectoryPublisher']
 
+
 class WholeBodyTrajectoryPublisher():
     def __init__(self, topic, model):
         # Defining the subscriber

@@ -6,6 +6,7 @@ from .whole_body_interface import WholeBodyStateInterface
 
 __all__ = ['WholeBodyStatePublisher']
 
+
 class WholeBodyStatePublisher():
     def __init__(self, topic, model):
         # Initializing the publisher
