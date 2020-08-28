@@ -8,11 +8,11 @@ __all__ = ['WholeBodyStatePublisher']
 
 
 class WholeBodyStatePublisher():
-    def __init__(self, topic, model):
+    def __init__(self, topic, model, frame_id="world", queue_size=10):
         # Initializing the publisher
-        self.pub = rospy.Publisher(topic, WholeBodyState, queue_size=1)
-        self.wb_iface = WholeBodyStateInterface(model)
+        self._pub = rospy.Publisher(topic, WholeBodyState, queue_size=queue_size)
+        self._wb_iface = WholeBodyStateInterface(model, frame_id)
 
     def publish(self, t, q, v, tau, p=dict(), pd=dict(), f=dict(), s=dict()):
-        msg = self.wb_iface.writeToMessage(t, q, v, tau, p, pd, f, s)
-        self.pub.publish(msg)
+        msg = self._wb_iface.writeToMessage(t, q, v, tau, p, pd, f, s)
+        self._pub.publish(msg)
