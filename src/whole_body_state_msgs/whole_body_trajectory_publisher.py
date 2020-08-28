@@ -9,10 +9,10 @@ __all__ = ['WholeBodyTrajectoryPublisher']
 
 
 class WholeBodyTrajectoryPublisher():
-    def __init__(self, topic, model):
+    def __init__(self, topic, model, frame_id="world", queue_size=10):
         # Defining the subscriber
-        self.pub = rospy.Publisher(topic, WholeBodyTrajectory, queue_size=1)
-        self.wb_iface = WholeBodyStateInterface(model)
+        self.pub = rospy.Publisher(topic, WholeBodyTrajectory, queue_size=queue_size)
+        self.wb_iface = WholeBodyStateInterface(model, frame_id)
 
     def publish(self, ts, qs, vs=None, us=None, ps=None, pds=None, fs=None, ss=None):
         msg = WholeBodyTrajectory()
@@ -46,7 +46,7 @@ class WholeBodyTrajectoryPublisher():
                 return
 
         msg.header.stamp = rospy.Time.now()
-        msg.header.frame_id = "world"
+        msg.header.frame_id = self.wb_iface.frame_id
         for i in range(len(ts)):
             vi = None
             if vs is not None:

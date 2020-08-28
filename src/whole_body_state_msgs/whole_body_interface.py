@@ -10,11 +10,12 @@ __all__ = ['WholeBodyStateInterface']
 
 
 class WholeBodyStateInterface():
-    def __init__(self, model):
+    def __init__(self, model, frame_id):
         self.model = model
         self.data = model.createData()
+        self.frame_id = frame_id
         self.msg = WholeBodyState()
-        self.msg.header.frame_id = "world"
+        self.msg.header.frame_id = frame_id
         njoints = self.model.njoints - 2
         for j in range(njoints):
             name = self.model.names[j + 2]
