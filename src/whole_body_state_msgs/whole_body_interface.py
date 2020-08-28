@@ -185,5 +185,4 @@ class WholeBodyStateInterface():
             normal = contact.surface_normal
             nsurf = np.array([normal.x, normal.y, normal.z])
             s[name] = [nsurf, contact.friction_coefficient]
-        return copy.deepcopy(t), copy.deepcopy(q), copy.deepcopy(v), copy.deepcopy(tau), copy.deepcopy(
-            p), copy.deepcopy(pd), copy.deepcopy(f), copy.deepcopy(s)
+        return t, q, v, tau, p, pd, f, s

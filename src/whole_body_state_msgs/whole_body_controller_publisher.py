@@ -33,7 +33,6 @@ class WholeBodyControllerPublisher():
         msg = WholeBodyController()
         msg.header.stamp = rospy.Time(t)
         msg.header.frame_id = "world"
-        msg.actual = copy.deepcopy(self.wb_iface.writeToMessage(t, q, v, tau, p, pd, f, s))
-        msg.desired = copy.deepcopy(self.wb_iface.writeToMessage(t, q_des, v_des, tau_des, p_des, pd_des, f_des,
-                                                                 s_des))
+        msg.actual = self.wb_iface.writeToMessage(t, q, v, tau, p, pd, f, s)
+        msg.desired = self.wb_iface.writeToMessage(t, q_des, v_des, tau_des, p_des, pd_des, f_des, s_des)
         self.pub.publish(msg)

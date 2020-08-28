@@ -63,6 +63,5 @@ class WholeBodyTrajectoryPublisher():
             fi = dict()
             if fs is not None:
                 fi = fs[i]
-            wb_msg = copy.deepcopy(self.wb_iface.writeToMessage(ts[i], qs[i], vi, ui, pi, pdi, fi))
-            msg.trajectory.append(wb_msg)
+            msg.trajectory.append(self.wb_iface.writeToMessage(ts[i], qs[i], vi, ui, pi, pdi, fi))
         self.pub.publish(msg)
