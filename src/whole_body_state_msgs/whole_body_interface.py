@@ -10,7 +10,7 @@ __all__ = ['WholeBodyStateInterface']
 
 
 class WholeBodyStateInterface():
-    def __init__(self, model, frame_id):
+    def __init__(self, model, frame_id="world"):
         self._model = model
         self._data = model.createData()
         self.frame_id = frame_id
