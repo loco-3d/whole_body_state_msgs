@@ -19,8 +19,6 @@ FIND_PACKAGE(catkin REQUIRED COMPONENTS
   message_generation
 )
 
-catkin_python_setup()
-
 # Define messages to be generated
 add_message_files(
   DIRECTORY msg
