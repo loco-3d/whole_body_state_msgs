@@ -13,7 +13,6 @@ MESSAGE(STATUS "Released under the BSD 3-Clause License.")
 
 # Find required packages
 FIND_PACKAGE(catkin REQUIRED COMPONENTS
-  rospy
   std_msgs
   geometry_msgs
   message_generation
