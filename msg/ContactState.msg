@@ -20,10 +20,10 @@ string name
 uint8 type
 
 # Type of contact states
-int8 UNKNOWN  = -1
-int8 CLOSED   = 0
-int8 OPEN     = 1
-int8 SLIPPING = 2
+int8 UNKNOWN  = 0  # 0 because it's the default for int8
+int8 ACTIVE   = 1
+int8 INACTIVE = 2
+int8 SLIPPING = 3
 
 # Contact state (e.g. from a contact state estimator)
 int8 contact_state
