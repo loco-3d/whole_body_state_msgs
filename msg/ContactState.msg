@@ -26,7 +26,7 @@ int8 OPEN     = 1
 int8 SLIPPING = 2
 
 # Contact state (e.g. from a contact state estimator)
-int8 contact_state = -1  # set default to unknown
+int8 contact_state
 
 # State of the contact body
 geometry_msgs/Pose pose
