@@ -1,0 +1,203 @@
+class update_whole_body_state_msgs_ContactState_f6d14dc81033ba2c960f899fcaf261ff(MessageUpdateRule):
+	old_type = "whole_body_state_msgs/ContactState"
+	old_full_text = """
+# This message describes the state of contact or end-effector body.
+#
+# The contact state is expressed in the world frame. A contact state is
+# defined by:
+#  * type of contact
+#  * the frame name
+#  * the pose of the contact,
+#  * the velocity of the contact,
+#  * the wrench of the contact
+#  * the normal vector that defines the surface
+#  * the friction coefficient of the surface
+#  * its classified state, if available
+
+# Type of contact identifiers
+uint8 locomotion=0
+uint8 manipulation=1
+
+# Name of the contact body
+string name
+uint8 type
+
+# Type of contact states
+int8 UNKNOWN  = 0  # 0 because it's the default for int8
+int8 INACTIVE = 1
+int8 ACTIVE   = 2
+int8 SLIPPING = 3
+
+# Contact state (e.g. from a contact state estimator)
+int8 contact_state
+
+# State of the contact body
+geometry_msgs/Pose pose
+geometry_msgs/Twist velocity
+geometry_msgs/Wrench wrench
+geometry_msgs/Vector3 surface_normal
+float64 friction_coefficient
+
+================================================================================
+MSG: geometry_msgs/Pose
+# A representation of pose in free space, composed of position and orientation. 
+Point position
+Quaternion orientation
+
+================================================================================
+MSG: geometry_msgs/Point
+# This contains the position of a point in free space
+float64 x
+float64 y
+float64 z
+
+================================================================================
+MSG: geometry_msgs/Quaternion
+# This represents an orientation in free space in quaternion form.
+
+float64 x
+float64 y
+float64 z
+float64 w
+
+================================================================================
+MSG: geometry_msgs/Twist
+# This expresses velocity in free space broken into its linear and angular parts.
+Vector3  linear
+Vector3  angular
+
+================================================================================
+MSG: geometry_msgs/Vector3
+# This represents a vector in free space. 
+# It is only meant to represent a direction. Therefore, it does not
+# make sense to apply a translation to it (e.g., when applying a 
+# generic rigid transformation to a Vector3, tf2 will only apply the
+# rotation). If you want your data to be translatable too, use the
+# geometry_msgs/Point message instead.
+
+float64 x
+float64 y
+float64 z
+================================================================================
+MSG: geometry_msgs/Wrench
+# This represents force in free space, separated into
+# its linear and angular parts.
+Vector3  force
+Vector3  torque
+"""
+
+	new_type = "whole_body_state_msgs/ContactState"
+	new_full_text = """
+# This message describes the state of contact or end-effector body.
+#
+# The contact state is expressed in the world frame. A contact state is
+# defined by:
+#  * type of contact
+#  * status of the contact
+#  * the frame name
+#  * the pose of the contact,
+#  * the velocity of the contact,
+#  * the wrench of the contact
+#  * the normal vector that defines the surface
+#  * the friction coefficient of the surface
+#  * its classified state, if available
+
+# Type of contact identifiers
+uint8 LOCOMOTION   = 0
+uint8 MANIPULATION = 1
+
+# Type of contact states
+uint8 UNKNOWN  = 0  # 0 because it's the default for int8
+uint8 INACTIVE = 1
+uint8 ACTIVE   = 2
+uint8 SLIPPING = 3
+
+# Name of the contact body
+string name
+
+# Type of contact
+uint8 type
+
+# Contact status (e.g. from a contact state estimator)
+uint8 status
+
+# State of the contact body
+geometry_msgs/Pose pose
+geometry_msgs/Twist velocity
+geometry_msgs/Wrench wrench
+geometry_msgs/Vector3 surface_normal
+float64 friction_coefficient
+
+================================================================================
+MSG: geometry_msgs/Pose
+# A representation of pose in free space, composed of position and orientation. 
+Point position
+Quaternion orientation
+
+================================================================================
+MSG: geometry_msgs/Point
+# This contains the position of a point in free space
+float64 x
+float64 y
+float64 z
+
+================================================================================
+MSG: geometry_msgs/Quaternion
+# This represents an orientation in free space in quaternion form.
+
+float64 x
+float64 y
+float64 z
+float64 w
+
+================================================================================
+MSG: geometry_msgs/Twist
+# This expresses velocity in free space broken into its linear and angular parts.
+Vector3  linear
+Vector3  angular
+
+================================================================================
+MSG: geometry_msgs/Vector3
+# This represents a vector in free space. 
+# It is only meant to represent a direction. Therefore, it does not
+# make sense to apply a translation to it (e.g., when applying a 
+# generic rigid transformation to a Vector3, tf2 will only apply the
+# rotation). If you want your data to be translatable too, use the
+# geometry_msgs/Point message instead.
+
+float64 x
+float64 y
+float64 z
+================================================================================
+MSG: geometry_msgs/Wrench
+# This represents force in free space, separated into
+# its linear and angular parts.
+Vector3  force
+Vector3  torque
+"""
+
+	order = 0
+	migrated_types = [
+		("geometry_msgs/Pose","geometry_msgs/Pose"),
+		("geometry_msgs/Twist","geometry_msgs/Twist"),
+		("geometry_msgs/Wrench","geometry_msgs/Wrench"),
+		("geometry_msgs/Vector3","geometry_msgs/Vector3"),]
+
+	valid = True
+
+	def update(self, old_msg, new_msg):
+		#Constant 'locomotion' has changed
+		#Constant 'ACTIVE' has changed
+		#Constant 'SLIPPING' has changed
+		#Constant 'UNKNOWN' has changed
+		#Constant 'manipulation' has changed
+		#Constant 'INACTIVE' has changed
+		new_msg.name = old_msg.name
+		new_msg.type = old_msg.type
+		new_msg.status = old_msg.contact_state
+		self.migrate(old_msg.pose, new_msg.pose)
+		self.migrate(old_msg.velocity, new_msg.velocity)
+		self.migrate(old_msg.wrench, new_msg.wrench)
+		self.migrate(old_msg.surface_normal, new_msg.surface_normal)
+		new_msg.friction_coefficient = old_msg.friction_coefficient
+		#No field to match field contact_state from old message
