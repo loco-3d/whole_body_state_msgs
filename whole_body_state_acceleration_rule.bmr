@@ -1,0 +1,59 @@
+class update_whole_body_state_msgs_JointState_3e041381f8ea994b52dc33badca37896(MessageUpdateRule):
+	old_type = "whole_body_state_msgs/JointState"
+	old_full_text = """
+# This message describes the state of an actuated joints.
+#
+# The state of each joint (revolute or prismatic) is defined by:
+#  * the joint name
+#  * the position of the joint (rad or m),
+#  * the velocity of the joint (rad/s or m/s), and
+#  * the effort that is applied in the joint (Nm or N).
+#
+# Each joint is uniquely identified by its name
+
+
+# Name of the joint
+string name
+
+# States of the joint
+float64 position
+float64 velocity
+float64 effort
+"""
+
+	new_type = "whole_body_state_msgs/JointState"
+	new_full_text = """
+# This message describes the state of an actuated joints.
+#
+# The state of each joint (revolute or prismatic) is defined by:
+#  * the joint name
+#  * the position of the joint (rad or m),
+#  * the velocity of the joint (rad/s or m/s),
+#  * the acceleration of the joint (rad/s^2 or m/s^2), and
+#  * the effort that is applied in the joint (Nm or N).
+#
+# Each joint is uniquely identified by its name
+
+
+# Name of the joint
+string name
+
+# States of the joint
+float64 position
+float64 velocity
+float64 acceleration
+float64 effort
+"""
+
+	order = 0
+	migrated_types = []
+
+	valid = False
+
+	def update(self, old_msg, new_msg):
+		new_msg.name = old_msg.name
+		new_msg.position = old_msg.position
+		new_msg.velocity = old_msg.velocity
+		#No matching field name in old message
+		new_msg.acceleration = 0.
+		new_msg.effort = old_msg.effort

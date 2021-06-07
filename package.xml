@@ -24,5 +24,6 @@
 
   <export>
     <rosbag_migration_rule rule_file="contact_state_rule.bmr"/>
+    <rosbag_migration_rule rule_file="whole_body_state_acceleration_rule.bmr"/>
   </export>
 </package>
