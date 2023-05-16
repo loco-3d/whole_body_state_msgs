@@ -22,7 +22,7 @@
 # The header specifies the time at which the state is published.
 
 
-Header header
+std_msgs/Header header
 
 # This represent the time state
 float64 time

@@ -11,19 +11,27 @@
   <author email="wolfgang@robots.ox.ac.uk">Wolfgang Merkt</author>
   <license>BSD 3-Clause</license>
 
-  <buildtool_depend>catkin</buildtool_depend>
+  <buildtool_depend condition="$ROS_VERSION == 1">catkin</buildtool_depend>
+  <buildtool_depend condition="$ROS_VERSION == 2">ament_cmake</buildtool_depend>
+  <buildtool_depend condition="$ROS_VERSION == 2">rosidl_default_generators</buildtool_depend>
 
-  <build_depend>message_generation</build_depend>
-  <build_depend>std_msgs</build_depend>
-  <build_depend>geometry_msgs</build_depend>
+  <!-- build and runtime dependencies-->
+  <depend>std_msgs</depend>
+  <depend>geometry_msgs</depend>
 
-  <exec_depend>message_runtime</exec_depend>
-  <exec_depend>std_msgs</exec_depend>
-  <exec_depend>geometry_msgs</exec_depend>
+  <!-- build dependencies -->
+  <build_depend condition="$ROS_VERSION == 1">message_generation</build_depend>
+
+  <!-- runtime dependencies -->
+  <exec_depend condition="$ROS_VERSION == 1">message_runtime</exec_depend>
+  <exec_depend condition="$ROS_VERSION == 2">rosidl_default_runtime</exec_depend>
   <exec_depend>rosbag_migration_rule</exec_depend>
+
+  <member_of_group>rosidl_interface_packages</member_of_group>
 
   <export>
     <rosbag_migration_rule rule_file="contact_state_rule.bmr"/>
     <rosbag_migration_rule rule_file="whole_body_state_acceleration_rule.bmr"/>
+    <build_type>ament_cmake</build_type>
   </export>
 </package>
