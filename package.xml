@@ -16,6 +16,7 @@
   <buildtool_depend condition="$ROS_VERSION == 2">rosidl_default_generators</buildtool_depend>
 
   <!-- build and runtime dependencies-->
+  <depend>ros_environment</depend>
   <depend>std_msgs</depend>
   <depend>geometry_msgs</depend>
 
