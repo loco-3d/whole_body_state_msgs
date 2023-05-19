@@ -33,7 +33,8 @@
   <export>
     <rosbag_migration_rule rule_file="contact_state_rule.bmr"/>
     <rosbag_migration_rule rule_file="whole_body_state_acceleration_rule.bmr"/>
-    <build_type condition="$ROS_VERSION == 2">ament_cmake</build_type>
+    <!-- This suffers from a bug in catkin, cf.: https://github.com/ros/catkin/issues/1170 -->
     <build_type condition="$ROS_VERSION == 1">catkin</build_type>
+    <build_type condition="$ROS_VERSION == 2">ament_cmake</build_type>
   </export>
 </package>
