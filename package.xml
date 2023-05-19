@@ -3,7 +3,7 @@
   <name>whole_body_state_msgs</name>
   <version>2.0.0</version>
   <description>
-    Message and service data structures for robot states
+    Message and service data structures for robot states. Compatibility with ROS1 and ROS2.
   </description>
 
   <maintainer email="carlos.mastalli@ed.ac.uk">Carlos Mastalli</maintainer>
@@ -24,8 +24,8 @@
 
   <!-- runtime dependencies -->
   <exec_depend condition="$ROS_VERSION == 1">message_runtime</exec_depend>
+  <exec_depend condition="$ROS_VERSION == 1">rosbag_migration_rule</exec_depend>
   <exec_depend condition="$ROS_VERSION == 2">rosidl_default_runtime</exec_depend>
-  <exec_depend>rosbag_migration_rule</exec_depend>
 
   <member_of_group>rosidl_interface_packages</member_of_group>
 
