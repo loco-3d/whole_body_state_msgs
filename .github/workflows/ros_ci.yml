@@ -7,16 +7,12 @@ jobs:
       matrix:
         env:
           #- {ROS_DISTRO: melodic}  # EOL May 2023 - CI issues
-          - {ROS_DISTRO: noetic}
+          - {ROS_DISTRO: noetic, PRERELEASE: true}
           - {ROS_DISTRO: humble}
           - {ROS_DISTRO: rolling}
-    env:
-      PRERELEASE: true
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-        with:
-          submodules: recursive
       - uses: 'ros-industrial/industrial_ci@master'
         env: ${{ matrix.env }}
 
