@@ -4,7 +4,7 @@
 # The description of every element is defined in their respective
 # messages. This state is described in respective time.
 #
-# The centroidal state describes 
+# The centroidal state describes
 #  * the position, velocity and acceleration of the CoM,
 #  * the base orientation and angular velocity, and
 #  * the linear and angular momentum and their rates.
