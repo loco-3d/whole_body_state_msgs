@@ -6,7 +6,7 @@
 #  * the linear and angular momentum and their rates.
 # where each quantity is expressed in the world frame.
 
-# Center of mass 
+# Center of mass
 geometry_msgs/Vector3 com_position
 geometry_msgs/Vector3 com_velocity
 

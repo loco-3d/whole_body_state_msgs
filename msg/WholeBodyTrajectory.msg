@@ -8,7 +8,7 @@
 # The header specifies the time at which the trajectory is published.
 
 
-Header header
+std_msgs/Header header
 
 # The actual whole-body state
 whole_body_state_msgs/WholeBodyState actual
