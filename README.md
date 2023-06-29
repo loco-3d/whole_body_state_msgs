@@ -33,8 +33,10 @@ catkin build #catkin_make
 
 ### :writing_hand: Written by
 
-- [Carlos Mastalli](https://cmastalli.github.io/), The University of Edinburgh :uk:
+- [Carlos Mastalli](https://cmastalli.github.io/), Heriot-Watt University :uk:
 
 ### :construction_worker: With contributions from
 
 - [Wolfgang Merkt](http://www.wolfgangmerkt.com/research/), University of Oxford :uk:
+
+and maintained by the [Robot Motor Intelligence (RoMI)](https://romilab.org) lab.
