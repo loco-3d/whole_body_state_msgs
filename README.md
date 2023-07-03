@@ -24,7 +24,6 @@ With these basic states, the package also describes a whole-body trajectory. Add
 
 The whole_body_state_msgs is a catkin/colcon project which can be built as:
 
-
 ```bash
     cd your_ros_ws/
     catkin build # ROS1
