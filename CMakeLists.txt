@@ -1,17 +1,18 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 3.3)
-PROJECT(whole_body_state_msgs)
+cmake_minimum_required(VERSION 3.3)
+project(whole_body_state_msgs)
 
 add_compile_options(-Wall -Wextra -Wpedantic)
 
 # Set up project properties
-SET(PROJECT_NAME whole_body_state_msgs)
-SET(PROJECT_DESCRIPTION "Whole-body State ROS messages")
+set(PROJECT_NAME whole_body_state_msgs)
+set(PROJECT_DESCRIPTION "Whole-body State ROS messages")
 
 # Print initial message - using STATUS so it doesn't trigger as a warning
-MESSAGE(STATUS "${PROJECT_DESCRIPTION}, version ${PROJECT_VERSION}")
-MESSAGE(STATUS "Copyright (C) 2020 University of Edinburgh, University of Oxford")
-MESSAGE(STATUS "All rights reserved.")
-MESSAGE(STATUS "Released under the BSD 3-Clause License.")
+message(STATUS "${PROJECT_DESCRIPTION}, version ${PROJECT_VERSION}")
+message(STATUS "Copyright (C) 2020-2023 Heriot-Watt University, University of Edinburgh")
+message(STATUS "                        University of Oxford, IHMC")
+message(STATUS "All rights reserved.")
+message(STATUS "Released under the BSD 3-Clause License.")
 
 if($ENV{ROS_VERSION} EQUAL 2)  # ROS 2
   # Find required packages
@@ -36,7 +37,7 @@ if($ENV{ROS_VERSION} EQUAL 2)  # ROS 2
   ament_package()
 else()  # ROS 1
   # Find required packages
-  FIND_PACKAGE(catkin REQUIRED COMPONENTS
+  find_package(catkin REQUIRED COMPONENTS
     std_msgs
     geometry_msgs
     message_generation
