@@ -6,8 +6,8 @@
     Message and service data structures for robot states. Compatibility with ROS1 and ROS2.
   </description>
 
-  <maintainer email="carlos.mastalli@ed.ac.uk">Carlos Mastalli</maintainer>
-  <author email="carlos.mastalli@ed.ac.uk">Carlos Mastalli</author>
+  <maintainer email="c.mastalli@hw.ac.uk">Carlos Mastalli</maintainer>
+  <author email="c.mastalli@hw.ac.uk">Carlos Mastalli</author>
   <author email="wolfgang@robots.ox.ac.uk">Wolfgang Merkt</author>
   <license>BSD 3-Clause</license>
 
@@ -15,7 +15,7 @@
   <buildtool_depend condition="$ROS_VERSION == 2">ament_cmake</buildtool_depend>
   <buildtool_depend condition="$ROS_VERSION == 2">rosidl_default_generators</buildtool_depend>
 
-  <!-- build and runtime dependencies-->
+  <!-- build and runtime dependencies -->
   <depend>ros_environment</depend>
   <depend>std_msgs</depend>
   <depend>geometry_msgs</depend>
